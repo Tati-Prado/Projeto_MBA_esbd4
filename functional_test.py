@@ -29,7 +29,7 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        # A página atualiza e mostra a tarefa com prioridade alta
+        # A página atualiza e mostra a tarefa com prioridade high
         task_list = self.browser.find_element(By.ID, 'task_list')
         tasks = task_list.find_elements(By.TAG_NAME, 'li')
 
@@ -38,20 +38,22 @@ class NewVisitorTest(unittest.TestCase):
             print("Conteúdo da tarefa encontrada:", task.text)
 
         self.assertTrue(
-            any(task.text == '1 - Comprar anzol - prioridade alta' for task in tasks),
-            "A tarefa 'Comprar anzol' com prioridade alta não foi encontrada."
+            any(task.text == '1 - Comprar anzol - prioridade high' for task in tasks),
+            "A tarefa 'Comprar anzol' com prioridade high não foi encontrada."
         )
 
         # Edith adiciona "Comprar cola instantânea" com prioridade baixa
         inputbox = self.browser.find_element(By.ID, 'new_task')
+        priority_select = self.browser.find_element(By.ID, 'priority')  # Localize o elemento novamente
         inputbox.send_keys('Comprar cola instantânea')
         priority_select.send_keys('Low')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
         # A página atualiza e mostra ambos os itens com as prioridades corretas
+        task_list = self.browser.find_element(By.ID, 'task_list')  # Localize task_list novamente
         tasks = task_list.find_elements(By.TAG_NAME, 'li')
-        self.assertIn('2 - Comprar cola instantânea - prioridade baixa', [task.text for task in tasks])
+        self.assertIn('2 - Comprar cola instantânea - prioridade low', [task.text for task in tasks])
 
         # Edith nota um URL único para sua lista e acessa para confirmar que a lista persiste
         unique_url = self.browser.find_element(By.ID, 'unique_url').text
@@ -59,9 +61,13 @@ class NewVisitorTest(unittest.TestCase):
 
         self.browser.get(unique_url)
         time.sleep(1)
+
+        # Localize task_list novamente após acessar a URL
+        task_list = self.browser.find_element(By.ID, 'task_list')
         tasks = task_list.find_elements(By.TAG_NAME, 'li')
-        self.assertIn('1 - Comprar anzol - prioridade alta', [task.text for task in tasks])
-        self.assertIn('2 - Comprar cola instantânea - prioridade baixa', [task.text for task in tasks])
+        self.assertIn('1 - Comprar anzol - prioridade high', [task.text for task in tasks])
+        self.assertIn('2 - Comprar cola instantânea - prioridade low', [task.text for task in tasks])
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
+
