@@ -32,6 +32,11 @@ class NewVisitorTest(unittest.TestCase):
         # A página atualiza e mostra a tarefa com prioridade alta
         task_list = self.browser.find_element(By.ID, 'task_list')
         tasks = task_list.find_elements(By.TAG_NAME, 'li')
+
+        # Exibe o conteúdo de cada tarefa encontrada para depuração
+        for task in tasks:
+            print("Conteúdo da tarefa encontrada:", task.text)
+
         self.assertTrue(
             any(task.text == '1 - Comprar anzol - prioridade alta' for task in tasks),
             "A tarefa 'Comprar anzol' com prioridade alta não foi encontrada."
