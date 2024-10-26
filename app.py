@@ -36,7 +36,7 @@ def home():
             </form>
             <ul id="task_list">
               {% for item in task_list %}
-                <li>{{ item.id }} - {{ item.task }} - prioridade {{ item.priority }}</li>
+                <li>{{ item.id }} - {{ item.task }} - prioridade {{ item.priority | lower }}</li>
               {% endfor %}
             </ul>
           </body>
